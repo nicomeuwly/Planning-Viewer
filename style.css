@@ -1,0 +1,85 @@
+body {
+    font-family: sans-serif;
+    padding: 2rem 4rem;
+    background: #f9f9f9;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+input {
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    border-radius: 0.3rem;
+    border: 1px solid #e6e6e6;
+    width: fit-content;
+}
+
+input:hover {
+    background-color: #efefef;
+}
+
+button {
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    color: white;
+    background-color: #1578CF;
+    border: 1px solid #1578CF;
+    border-radius: 0.3rem;
+}
+
+button:hover {
+    background-color: #FF5857;
+    border: 1px solid #FF5857;
+}
+
+ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+li {
+    display: flex;
+}
+
+.work {
+    color: #1578CF;
+    font-weight: bold;
+    flex-basis: 60%;
+    text-align: right;
+}
+
+.off {
+    flex-basis: 60%;
+    text-align: right;
+}
+
+.weekday {
+    flex-basis: 20%;
+}
+
+.date {
+    flex-basis: 20%;
+}
+
+#planning {
+    display: grid;
+    gap: 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+#person {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+section {
+    border: 3px solid #e6e6e6;
+    padding: 1rem 2rem;
+    border-radius: 1rem;
+}
+
+section:hover {
+    background: #efefef;
+}
