@@ -3,8 +3,11 @@ pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs
 
 const upload = document.getElementById("pdf-upload");
 const button = document.getElementById("process-btn");
+const copyButton = document.getElementById("copy-btn");
 const nameInput = document.getElementById("person-name");
 const container = document.getElementById("planning");
+
+let planning = [];
 
 button.addEventListener("click", async () => {
     const file = upload.files[0];
@@ -50,16 +53,25 @@ button.addEventListener("click", async () => {
         });
 
         const section = document.createElement("section");
-        section.innerHTML = `<h2>Semaine ${pageNum}</h2>`;
+        section.innerHTML = `<div class="week-title"><h2>Semaine ${pageNum}</h2><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 0V2H5V1H14V12H13V13H15V0H4ZM1 3V16H12V3H1ZM11 15H2V4H11V15Z" fill="black"/></svg></div>`;
         const ul = document.createElement("ul");
+        section.addEventListener("mouseover", (event) => {
+            event.target.querySelector("svg").style.display = "block";
+        });
+        section.addEventListener("mouseout", (event) => {
+            event.target.querySelector("svg").style.display = "none";
+        })
 
         const dayNames = ["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"];
 
         week.forEach(({ date, isWorking, time }) => {
             const li = document.createElement("li");
             const day = date.getDay();
-            li.innerHTML = `<span class="weekday">${dayNames[day-1]}.</span><span class="date">${date.toLocaleDateString("fr-CH")}</span><span class="${isWorking ? 'work' : 'off'}">${time}</span>`;
+            li.innerHTML = `<span class="weekday">${dayNames[day - 1]}.</span><span class="date">${date.toLocaleDateString("fr-CH")}</span><span class="${isWorking ? 'work' : 'off'}">${time}</span>`;
             ul.appendChild(li);
+            if (isWorking) {
+                planning.push({ name: person, date, time });
+            }
         });
 
         section.appendChild(ul);
@@ -68,5 +80,8 @@ button.addEventListener("click", async () => {
 
     if (container.innerHTML === "") {
         container.innerHTML = "<p>Aucune donnée trouvée pour cette personne.</p>";
+        copyButton.disabled = true;
+    } else {
+        copyButton.disabled = false;
     }
 });

@@ -9,11 +9,13 @@
 
 <body>
     <h1>Charger un planning PDF</h1>
+    <p>Cet outil permet de visualiser les jours de travail d'une personne à partir du planning du mois. Il suffit de fournir le planning au format PDF et d'indiquer le nom de la personne concernée.</p>
     <input type="file" id="pdf-upload" accept="application/pdf" />
     <div id="person">
         <label>Nom de la personne :</label>
-        <input type="text" id="person-name" placeholder="Ex: Dupont" />
+        <input type="text" id="person-name" placeholder="Ex: Skywalker Luke" />
         <button id="process-btn">Afficher le planning</button>
+        <button id="copy-btn" disabled="true">Copier le planning</button>
     </div>
 
     <div id="planning"></div>
