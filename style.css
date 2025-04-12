@@ -87,26 +87,14 @@ li {
 
 h2 {
     width: fit-content;
+    color: var(--secondary-text)
 }
 
 path {
     fill: var(--primary-color);
 }
 
-svg {
-    display: none;
-}
-
-svg:hover {
-    cursor: pointer;
-    path {
-        fill: var(--button-color-hover);
-    }
-}
-
 .work {
-    color: var(--secondary-text);
-    font-weight: bold;
     flex-basis: 60%;
     text-align: right;
 }
