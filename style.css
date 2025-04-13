@@ -10,6 +10,7 @@
 }
 
 body {
+    width: 100vw;
     font-family: sans-serif;
     padding: 2rem 4rem;
     background: var(--background);
