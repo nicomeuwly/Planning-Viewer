@@ -7,9 +7,11 @@
     --background: white;
     --primary-text: white;
     --secondary-text: #00559D;
+    font-size: 20px;
 }
 
 body {
+    width: 100vw;
     font-family: sans-serif;
     padding: 2rem 4rem;
     background: var(--background);
