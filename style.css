@@ -69,6 +69,20 @@ button {
     color: var(--primary-disabled);
 }
 
+.copy {
+    border: none;
+    padding: 0;
+    background: transparent;
+    cursor: pointer;
+    width: fit-content;
+    height: fit-content;
+    display: none;
+}
+
+.copy:hover path {
+    fill: var(--button-color-hover);
+}
+
 ul {
     list-style: none;
     padding-left: 0;
@@ -76,6 +90,13 @@ ul {
 
 li {
     display: flex;
+}
+
+hr {
+    height: 1px;
+    border-width: 0;
+    color: var(--secondary-disabled);
+    background-color: var(--secondary-disabled);
 }
 
 .week-title {
@@ -133,6 +154,9 @@ section {
 
 section:hover {
     background: rgba(0, 0, 0, 0.05);
+    .copy {
+        display: block;
+    }
 }
 
 input[type=file] {

@@ -6,6 +6,8 @@ const button = document.getElementById("process-btn");
 const copyButton = document.getElementById("copy-btn");
 const nameInput = document.getElementById("person-name");
 const container = document.getElementById("planning");
+const copyPath = `<path d="M4 0V2H5V1H14V12H13V13H15V0H4ZM1 3V16H12V3H1ZM11 15H2V4H11V15Z" fill="black"/>`;
+const copyDonePath = `<path fill-rule="evenodd" clip-rule="evenodd" d="M13.213 4L5.597 11.459L2.787 8.706L2 9.477L5.597 13L14 4.77L13.213 4Z" fill="black"/>`;
 
 let planning = [];
 
@@ -53,7 +55,7 @@ button.addEventListener("click", async () => {
         });
 
         const section = document.createElement("section");
-        section.innerHTML = `<div class="week-title"><h2>Semaine ${pageNum}</h2><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 0V2H5V1H14V12H13V13H15V0H4ZM1 3V16H12V3H1ZM11 15H2V4H11V15Z" fill="black"/></svg></div>`;
+        section.innerHTML = `<div class="week-title"><h2>Semaine ${pageNum}</h2><button type="button" class="copy"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">${copyPath}</svg></button></div>`;
         const ul = document.createElement("ul");
 
         const dayNames = ["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"];
@@ -66,7 +68,7 @@ button.addEventListener("click", async () => {
             li.innerHTML = `<span class="weekday">${dayNames[day - 1]}.</span><span class="date">${date.toLocaleDateString("fr-CH")}</span><span class="${isWorking ? 'work' : 'off'}">${time}</span>`;
             ul.appendChild(li);
             if (isWorking) {
-                planning.push({ name: person, date, time });
+                planning.push({ date, time });
             }
             if (i < 6) {
                 const hr = document.createElement("hr");
@@ -85,3 +87,17 @@ button.addEventListener("click", async () => {
         copyButton.disabled = false;
     }
 });
+
+copyButton.addEventListener("click", () => writeClipboardText(JSON.stringify(planning)));
+
+async function writeClipboardText(text) {
+    try {
+      await navigator.clipboard.writeText(text);
+      copyButton.textContent = "Copié !";
+      setTimeout(() => {
+        copyButton.textContent = "Copier le planning";
+      }, 2000);
+    } catch (error) {
+      console.error(error.message);
+    }
+  }
