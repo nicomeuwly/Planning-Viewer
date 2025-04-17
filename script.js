@@ -12,6 +12,7 @@ const copyDonePath = `<path fill-rule="evenodd" clip-rule="evenodd" d="M13.213 4
 let planning = [];
 
 button.addEventListener("click", async () => {
+    planning = [];
     const file = upload.files[0];
     const person = nameInput.value.trim();
     if (!file || !person) return alert("Sélectionnez un fichier PDF et entrez un nom.");
