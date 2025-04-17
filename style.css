@@ -1,187 +1,223 @@
 :root {
-    --primary-color: #00559D;
-    --secondary-color: #D6E4EF;
-    --button-color-hover: #E60021;
-    --primary-disabled: rgba(0, 0, 0, 0.4);
-    --secondary-disabled: rgba(0, 0, 0, 0.1);
-    --background: white;
-    --primary-text: white;
-    --secondary-text: #00559D;
-    font-size: 20px;
+  --primary-color: #00559d;
+  --secondary-color: #d6e4ef;
+  --button-color-hover: #e60021;
+  --primary-disabled: rgba(0, 0, 0, 0.4);
+  --secondary-disabled: rgba(0, 0, 0, 0.1);
+  --background: white;
+  --primary-text: white;
+  --secondary-text: #00559d;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
 body {
-    width: 100vw;
-    font-family: sans-serif;
-    padding: 2rem 4rem;
-    background: var(--background);
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  font-family: sans-serif;
+  padding: 2rem 4rem;
+  background: var(--background);
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 }
 
 h1,
 p {
-    margin: 0;
+  margin: 0;
 }
 
 #person-name {
-    padding: 0.5rem 1rem;
-    font-size: 1rem;
-    border-radius: 0.3rem;
-    border: 1px solid var(--secondary-disabled);
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  border-radius: 0.3rem;
+  border: 1px solid var(--secondary-disabled);
 }
 
 #person-name:hover {
-    background-color: #efefef;
+  background-color: #efefef;
 }
 
 button {
-    padding: 0.5rem 1rem;
-    font-size: 1rem;
-    border-radius: 0.3rem;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  border-radius: 0.3rem;
 }
 
 #process-btn {
-    background-color: var(--primary-color);
-    border: 1px solid var(--primary-color);
-    color: white;
+  background-color: var(--primary-color);
+  border: 1px solid var(--primary-color);
+  color: white;
 }
 
 #process-btn:hover {
-    background-color: var(--button-color-hover);
-    border: 1px solid var(--button-color-hover);
+  background-color: var(--button-color-hover);
+  border: 1px solid var(--button-color-hover);
 }
 
 #copy-btn {
-    background-color: var(--secondary-color);
-    border: 1px solid var(--secondary-color);
-    color: var(--primary-color);
+  background-color: var(--secondary-color);
+  border: 1px solid var(--secondary-color);
+  color: var(--primary-color);
 }
 
 #copy-btn:hover {
-    background-color: var(--button-color-hover);
-    border: 1px solid var(--button-color-hover);
-    color: var(--primary-text);
+  background-color: var(--button-color-hover);
+  border: 1px solid var(--button-color-hover);
+  color: var(--primary-text);
 }
 
 #copy-btn[disabled] {
-    background-color: var(--background);
-    border: 1px solid var(--secondary-disabled);
-    color: var(--primary-disabled);
+  background-color: var(--background);
+  border: 1px solid var(--secondary-disabled);
+  color: var(--primary-disabled);
 }
 
 .copy {
-    border: none;
-    padding: 0;
-    background: transparent;
-    cursor: pointer;
-    width: fit-content;
-    height: fit-content;
-    display: none;
+  border: none;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+  width: fit-content;
+  height: fit-content;
+  display: none;
 }
 
 .copy:hover path {
-    fill: var(--button-color-hover);
+  fill: var(--button-color-hover);
 }
 
 ul {
-    list-style: none;
-    padding-left: 0;
+  list-style: none;
+  padding-left: 0;
 }
 
 li {
-    display: flex;
+  display: flex;
 }
 
 hr {
-    height: 1px;
-    border-width: 0;
-    color: var(--secondary-disabled);
-    background-color: var(--secondary-disabled);
+  height: 1px;
+  border-width: 0;
+  color: var(--secondary-disabled);
+  background-color: var(--secondary-disabled);
 }
 
 .week-title {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 }
 
 h2 {
-    width: fit-content;
-    color: var(--secondary-text)
+  width: fit-content;
+  color: var(--secondary-text);
 }
 
 path {
-    fill: var(--primary-color);
+  fill: var(--primary-color);
 }
 
 .work {
-    flex-basis: 60%;
-    text-align: right;
+  flex-basis: 60%;
+  text-align: right;
 }
 
 .off {
-    flex-basis: 60%;
-    text-align: right;
+  flex-basis: 60%;
+  text-align: right;
 }
 
 .weekday {
-    flex-basis: 20%;
+  flex-basis: 20%;
 }
 
 .date {
-    flex-basis: 20%;
+  flex-basis: 20%;
 }
 
 #planning {
-    display: grid;
-    gap: 2rem;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
 }
 
 #person {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
 }
 
 section {
-    border: 2px solid var(--secondary-disabled);
-    padding: 1rem 2rem;
-    border-radius: 1rem;
+  border: 2px solid var(--secondary-disabled);
+  padding: 1rem 2rem;
+  border-radius: 1rem;
 }
 
 section:hover {
-    background: rgba(0, 0, 0, 0.05);
-    .copy {
-        display: block;
-    }
+  background: rgba(0, 0, 0, 0.05);
+  .copy {
+    display: block;
+  }
 }
 
-input[type=file] {
-    color: var(--primary-color);
-    padding: 0.5rem 0.5rem;
-    font-size: 1rem;
-    border-radius: 0.3rem;
-    font-size: 1rem;
-    border-radius: 0.3rem;
-    background-color: var(--secondary-color);
-    border: 1px solid var(--secondary-color);
+input[type="file"] {
+  color: var(--primary-color);
+  padding: 0.5rem 0.5rem;
+  font-size: 1rem;
+  border-radius: 0.3rem;
+  font-size: 1rem;
+  border-radius: 0.3rem;
+  background-color: var(--secondary-color);
+  border: 1px solid var(--secondary-color);
 }
 
-input[type=file]::file-selector-button:hover {
-    background: var(--button-color-hover);
+input[type="file"]::file-selector-button:hover {
+  background: var(--button-color-hover);
 }
 
-input[type=file]::file-selector-button {
-    margin-right: 8px;
-    border: none;
-    background: var(--primary-color);
-    padding: 0.5rem 1rem;
-    color: var(--primary-text);
-    border-radius: 0.3rem;
-    cursor: pointer;
+input[type="file"]::file-selector-button {
+  margin-right: 8px;
+  border: none;
+  background: var(--primary-color);
+  padding: 0.5rem 1rem;
+  color: var(--primary-text);
+  border-radius: 0.3rem;
+  cursor: pointer;
+}
+
+@media (max-width: 600px) {
+  body {
+    padding: 2rem 2rem;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  #person {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .week-title h2 {
+    font-size: 1.2rem;
+  }
+
+  .copy {
+    display: block;
+  }
+
+  .copy svg {
+    width: 24px;
+    height: 24px;
+  }
 }
