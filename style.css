@@ -28,6 +28,17 @@ body {
   gap: 2rem;
 }
 
+body > header {
+  width: 100%;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+}
+
+header {
+  border-top: 4px solid var(--primary-color);
+  padding: 1rem 4rem;
+}
+
 h1,
 p {
   margin: 0;
