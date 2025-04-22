@@ -21,7 +21,7 @@ body {
   max-width: 1200px;
   margin: 0 auto;
   font-family: sans-serif;
-  padding: 2rem 4rem;
+  padding: 6rem 4rem 2rem 4rem;
   background: var(--background);
   display: flex;
   flex-direction: column;
@@ -30,13 +30,16 @@ body {
 
 body > header {
   width: 100%;
-  margin-left: calc(50% - 50vw);
-  margin-right: calc(50% - 50vw);
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
 header {
-  border-top: 4px solid var(--primary-color);
+  border-top: 6px solid var(--primary-color);
+  box-shadow: 0 3px 5px var(--secondary-disabled);
   padding: 1rem 4rem;
+  font-weight: bold;
 }
 
 h1,
@@ -207,7 +210,11 @@ input[type="file"]::file-selector-button {
 
 @media (max-width: 600px) {
   body {
-    padding: 2rem 2rem;
+    padding: 5rem 2rem 2rem 2rem;
+  }
+
+  header {
+    padding: 1rem 2rem;
   }
 
   h1 {
