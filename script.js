@@ -8,6 +8,7 @@ const nameInput = document.getElementById("person-name");
 const container = document.getElementById("planning");
 const copyPath = `<path d="M4 0V2H5V1H14V12H13V13H15V0H4ZM1 3V16H12V3H1ZM11 15H2V4H11V15Z" fill="black"/>`;
 const copyDonePath = `<path fill-rule="evenodd" clip-rule="evenodd" d="M13.213 4L5.597 11.459L2.787 8.706L2 9.477L5.597 13L14 4.77L13.213 4Z" fill="black"/>`;
+const infoButton = document.getElementById("info-btn");
 
 let planning = [];
 

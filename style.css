@@ -58,13 +58,10 @@ p {
   background-color: #efefef;
 }
 
-button {
+#process-btn {
   padding: 0.5rem 1rem;
   font-size: 1rem;
   border-radius: 0.3rem;
-}
-
-#process-btn {
   background-color: var(--primary-color);
   border: 1px solid var(--primary-color);
   color: white;
@@ -76,6 +73,9 @@ button {
 }
 
 #copy-btn {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  border-radius: 0.3rem;
   background-color: var(--secondary-color);
   border: 1px solid var(--secondary-color);
   color: var(--primary-color);
@@ -91,6 +91,20 @@ button {
   background-color: var(--background);
   border: 1px solid var(--secondary-disabled);
   color: var(--primary-disabled);
+}
+
+#info-btn {
+  display: flex;
+  padding: 0;
+  border: none;
+  width: fit-content;
+  height: fit-content;
+  background: transparent;
+  cursor: pointer;
+}
+
+#info-btn:hover path {
+  fill: var(--button-color-hover);
 }
 
 .copy {
@@ -179,7 +193,7 @@ section {
 section:hover {
   background: rgba(0, 0, 0, 0.05);
   .copy {
-    display: block;
+    display: flex;
   }
 }
 
@@ -208,7 +222,7 @@ input[type="file"]::file-selector-button {
   cursor: pointer;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 768px) {
   body {
     padding: 5rem 2rem 2rem 2rem;
   }
@@ -231,10 +245,10 @@ input[type="file"]::file-selector-button {
   }
 
   .copy {
-    display: block;
+    display: flex;
   }
 
-  .copy svg {
+  .copy svg, #info-btn svg {
     width: 24px;
     height: 24px;
   }
