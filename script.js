@@ -9,6 +9,9 @@ const container = document.getElementById("planning");
 const copyPath = `<path d="M4 0V2H5V1H14V12H13V13H15V0H4ZM1 3V16H12V3H1ZM11 15H2V4H11V15Z" fill="black"/>`;
 const copyDonePath = `<path fill-rule="evenodd" clip-rule="evenodd" d="M13.213 4L5.597 11.459L2.787 8.706L2 9.477L5.597 13L14 4.77L13.213 4Z" fill="black"/>`;
 const infoButton = document.getElementById("info-btn");
+const infoCard = document.getElementById("info-card");
+const closeButton = document.querySelector("#close-btn");
+const inputFileRect = document.getElementById("pdf-upload").getBoundingClientRect();
 
 let planning = [];
 
@@ -94,12 +97,30 @@ copyButton.addEventListener("click", () => writeClipboardText(JSON.stringify(pla
 
 async function writeClipboardText(text) {
     try {
-      await navigator.clipboard.writeText(text);
-      copyButton.textContent = "Copié !";
-      setTimeout(() => {
-        copyButton.textContent = "Copier le planning";
-      }, 2000);
+        await navigator.clipboard.writeText(text);
+        copyButton.textContent = "Copié !";
+        setTimeout(() => {
+            copyButton.textContent = "Copier le planning";
+        }, 2000);
     } catch (error) {
-      console.error(error.message);
+        console.error(error.message);
     }
-  }
+}
+
+infoButton.addEventListener("click", () => {
+    infoCard.style.display = "flex";
+    if (window.innerWidth <= 768) {
+        document.body.style.overflow = "hidden";
+    } else {
+        infoCard.style.top = `${copyButton.getBoundingClientRect().top + copyButton.offsetHeight}px`;
+        console.log(inputFileRect.right - copyButton.getBoundingClientRect().right)
+        console.log(infoCard.getBoundingClientRect().width)
+    }
+});
+
+closeButton.addEventListener("click", () => {
+    infoCard.style.display = "none";
+    if (window.innerWidth <= 768) {
+        document.body.style.overflow = "visible";
+    }
+})
