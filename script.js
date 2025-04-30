@@ -82,6 +82,23 @@ button.addEventListener("click", async () => {
         });
 
         section.appendChild(ul);
+        section.querySelector(".copy").addEventListener("click", async () => {
+            try {
+                const weekCopy = week.filter((el) => {
+                    return el.isWorking === true;
+                })
+                weekCopy.forEach((el) => {
+                    delete el.isWorking;
+                })
+                await navigator.clipboard.writeText(JSON.stringify(weekCopy));
+                section.querySelector("svg").innerHTML = copyDonePath;
+                setTimeout(() => {
+                    section.querySelector("svg").innerHTML = copyPath;
+                }, 2000);
+            } catch (error) {
+                console.error(error.message);
+            }
+        });
         container.appendChild(section);
     }
 
@@ -107,16 +124,20 @@ async function writeClipboardText(text) {
     }
 }
 
+infoButton.addEventListener("mouseover", () => {
+    infoCard.style.display = "flex";
+})
+
+infoButton.addEventListener("mouseout", () => {
+    infoCard.style.display = "none";
+})
+
 infoButton.addEventListener("click", () => {
     infoCard.style.display = "flex";
     if (window.innerWidth <= 768) {
         document.body.style.overflow = "hidden";
-    } else {
-        infoCard.style.top = `${copyButton.getBoundingClientRect().top + copyButton.offsetHeight}px`;
-        console.log(inputFileRect.right - copyButton.getBoundingClientRect().right)
-        console.log(infoCard.getBoundingClientRect().width)
     }
-});
+})
 
 closeButton.addEventListener("click", () => {
     infoCard.style.display = "none";
