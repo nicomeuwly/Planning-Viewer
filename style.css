@@ -8,6 +8,7 @@
   --background-secondary: #fbfbfb;
   --primary-text: white;
   --secondary-text: #00559d;
+  --teriary-text: rgba(0, 0, 0, 0.6);
 }
 
 *,
@@ -59,6 +60,23 @@ p {
   background-color: #efefef;
 }
 
+#person-name-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+label {
+  font-size: 1rem;
+  color: var(--teriary-text);
+}
+
+#process-btn-container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
 #process-btn {
   padding: 0.5rem 1rem;
   font-size: 1rem;
@@ -73,7 +91,7 @@ p {
   border: 1px solid var(--button-color-hover);
 }
 
-#copy-btn {
+#copy-btn, #export-btn {
   padding: 0.5rem 1rem;
   font-size: 1rem;
   border-radius: 0.3rem;
@@ -82,13 +100,13 @@ p {
   color: var(--primary-color);
 }
 
-#copy-btn:hover {
+#copy-btn:hover, #export-btn:hover {
   background-color: var(--button-color-hover);
   border: 1px solid var(--button-color-hover);
   color: var(--primary-text);
 }
 
-#copy-btn[disabled] {
+#copy-btn[disabled], #export-btn[disabled] {
   background-color: var(--background);
   border: 1px solid var(--secondary-disabled);
   color: var(--primary-disabled);
@@ -230,13 +248,7 @@ path {
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
-  align-items: center;
-}
-
-#person div {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
+  align-items: flex-end;
 }
 
 section {
@@ -310,7 +322,7 @@ input[type="file"]::file-selector-button {
     height: 24px;
   }
 
-  #person div, #copy-btn {
+  #process-btn-container, #process-btn {
     width: 100%;
     gap: 1.5rem;
   }
