@@ -42,6 +42,14 @@ header {
   box-shadow: 0 3px 5px var(--secondary-disabled);
   padding: 1rem 4rem;
   font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+header span {
+  color: var(--primary-disabled);
+  font-weight: normal;
 }
 
 h1,
@@ -309,7 +317,9 @@ input[type="file"]::file-selector-button {
 
   #copy-btn,
   #export-btn {
+    display: flex;
     min-width: max-content;
-    padding: 0.5rem 0.5rem;
+    padding: 0.5rem;
+    flex-basis: 50%;
   }
 }
