@@ -88,6 +88,12 @@ p {
   display: none;
 }
 
+#person-container {
+  display: flex;
+  align-items: flex-end;
+  gap: 1rem;
+}
+
 #person-name {
   padding: 0.5rem 1rem;
   font-size: 1rem;
@@ -121,6 +127,7 @@ label {
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
+  height: fit-content;
 }
 
 #process-btn:hover {
@@ -239,6 +246,7 @@ h2 {
   flex-wrap: wrap;
   gap: 1rem;
   align-items: flex-end;
+  justify-content: space-between;
 }
 
 section {
@@ -291,6 +299,11 @@ input[type="file"]::file-selector-button {
 
   h1 {
     font-size: 1.5rem;
+  }
+
+  #person-container {
+    flex-direction: column;
+    align-items: stretch;
   }
 
   #person {

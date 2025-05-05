@@ -11,14 +11,14 @@
 </head>
 
 <body>
-  <header>📅 Planning Viewer<span>v1.1</span></header>
-  <h1>Charger un planning PDF</h1>
+  <header>📅 Planning Viewer<span>v1.1.0</span></header>
+  <h1>Charger et visualiser un planning PDF</h1>
   <div id="infos-container">
     <p>Cet outil permet de visualiser les jours de travail d'une personne à partir du planning du mois. Il suffit de
       fournir le planning au format PDF et d'indiquer le nom de la personne concernée.</p>
     <p id="more-infos" class="hidden">L'IA permet d'automatiser l'ajout d'événements à votre calendrier. Par exemple,
       avec Google Agenda, Gemini peut les enregistrer pour vous. Copiez votre planning, et Gemini l'intégrera à votre
-      calendrier.</p>
+      calendrier. Si vous ne pouvez pas ou ne souhaitez pas utiliser d'IA, vous pouvez simplement exporter le planning. Cette action générera un fichier importable dans votre calendrier habituel.</p>
     <button id="show-more-btn">Afficher plus
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path fill-rule="evenodd" clip-rule="evenodd"
@@ -30,17 +30,19 @@
   <hr>
   <input type="file" id="pdf-upload" accept="application/pdf" />
   <div id="person">
-    <div id="person-name-container">
-      <label>Nom et prénom</label>
-      <input type="text" id="person-name" placeholder="Ex: Skywalker Luke" />
-    </div>
-    <button type="button" id="process-btn">
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path fill-rule="evenodd" clip-rule="evenodd"
-          d="M0 0V16H16V0H0ZM1 3.001H15V1H1V3.001ZM1 15.001H15V4.001H1V15.001ZM8 6V13.001H12V6H8ZM9 12H11V7H9V12ZM4 6V7H5V13.001H6V6H4Z"
-          fill="currentColor" />
-      </svg>
-      Afficher le planning</button>
+    <form id="person-container">
+      <div id="person-name-container">
+        <label>Nom et prénom</label>
+        <input type="text" id="person-name" name="person" placeholder="Ex: Skywalker Luke" />
+      </div>
+      <button type="submit" id="process-btn">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd" clip-rule="evenodd"
+            d="M0 0V16H16V0H0ZM1 3.001H15V1H1V3.001ZM1 15.001H15V4.001H1V15.001ZM8 6V13.001H12V6H8ZM9 12H11V7H9V12ZM4 6V7H5V13.001H6V6H4Z"
+            fill="currentColor" />
+        </svg>
+        Afficher le planning</button>
+    </form>
     <div id="actions-btn-container">
       <button type="button" id="copy-btn" disabled="true">
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">

@@ -3,7 +3,7 @@ pdfjsLib.GlobalWorkerOptions.workerSrc =
   "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
 
 const upload = document.getElementById("pdf-upload");
-const button = document.getElementById("process-btn");
+const form = document.getElementById("person-container");
 const copyButton = document.getElementById("copy-btn");
 const exportButton = document.getElementById("export-btn");
 const nameInput = document.getElementById("person-name");
@@ -15,7 +15,7 @@ const info = document.getElementById("more-infos");
 
 let planning = [];
 
-button.addEventListener("click", async () => {
+async function showPlanning() {
   planning = [];
   const file = upload.files[0];
   const person = nameInput.value.trim();
@@ -110,11 +110,16 @@ button.addEventListener("click", async () => {
   if (container.innerHTML === "") {
     container.innerHTML = "<p>Aucune donnée trouvée pour cette personne.</p>";
     copyButton.disabled = true;
-    // exportButton.disabled = true;
+    exportButton.disabled = true;
   } else {
     copyButton.disabled = false;
-    // exportButton.disabled = false;
+    exportButton.disabled = false;
   }
+};
+
+form.addEventListener("submit", (e) => {
+  e.preventDefault();
+  showPlanning();
 });
 
 copyButton.addEventListener("click", () =>
@@ -142,15 +147,13 @@ function generateICS(planning) {
     const [startHour, startMinute] = start.split(":");
     const [endHour, endMinute] = end.split(":");
 
-    console.log(date.getFullYear(), date.getMonth(), date.getDate());
-    const format = (d) =>
-      d.toISOString().replace(/[-:]/g, "").split(".")[0] + "Z";
+    const format = (d, h, m) => d.getFullYear() + ("0" + (d.getMonth() + 1)).slice(-2) + ("0" + d.getDate()).slice(-2) + "T" + h + m + "00Z";
 
     return [
       "BEGIN:VEVENT",
       `UID:event${i}@planning-viewer`,
-      `DTSTART:${format(start)}`,
-      `DTEND:${format(end)}`,
+      `DTSTART;TZID=Europe/Zurich:${format(date, startHour, startMinute)}`,
+      `DTEND;TZID=Europe/Zurich:${format(date, endHour, endMinute)}`,
       `SUMMARY:Travail`,
       `DESCRIPTION:Jour de travail`,
       "END:VEVENT",
@@ -164,7 +167,7 @@ function generateICS(planning) {
   const blob = new Blob([icsContent], { type: "text/calendar;charset=utf-8" });
   const link = document.createElement("a");
   link.href = URL.createObjectURL(blob);
-  link.download = "planning.ics";
+  link.download = "DG-Planning.ics";
   link.click();
 }
 
