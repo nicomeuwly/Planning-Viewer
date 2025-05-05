@@ -16,11 +16,16 @@ const info = document.getElementById("more-infos");
 let planning = [];
 
 async function showPlanning() {
+  const formData = new FormData(form);
+
   planning = [];
   const file = upload.files[0];
-  const person = nameInput.value.trim();
-  if (!file || !person)
-    return alert("Sélectionnez un fichier PDF et entrez un nom.");
+  const person = formData.get("person").trim();
+
+  if (!file || !person) {
+    container.innerHTML = "<p>Sélectionnez un fichier PDF et entrez un nom.</p>";
+    return;
+  }
 
   const arrayBuffer = await file.arrayBuffer();
   const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;

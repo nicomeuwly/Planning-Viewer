@@ -241,6 +241,11 @@ h2 {
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
 }
 
+#planning p {
+  color: var(--button-color-hover);
+  margin: 0;
+}
+
 #person {
   display: flex;
   flex-wrap: wrap;
