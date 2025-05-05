@@ -5,16 +5,13 @@ pdfjsLib.GlobalWorkerOptions.workerSrc =
 const upload = document.getElementById("pdf-upload");
 const button = document.getElementById("process-btn");
 const copyButton = document.getElementById("copy-btn");
+const exportButton = document.getElementById("export-btn");
 const nameInput = document.getElementById("person-name");
 const container = document.getElementById("planning");
-const copyPath = `<path d="M4 0V2H5V1H14V12H13V13H15V0H4ZM1 3V16H12V3H1ZM11 15H2V4H11V15Z" fill="black"/>`;
-const copyDonePath = `<path fill-rule="evenodd" clip-rule="evenodd" d="M13.213 4L5.597 11.459L2.787 8.706L2 9.477L5.597 13L14 4.77L13.213 4Z" fill="black"/>`;
-const infoButton = document.getElementById("info-btn");
-const infoCard = document.getElementById("info-card");
-const closeButton = document.querySelector("#close-btn");
-const inputFileRect = document
-  .getElementById("pdf-upload")
-  .getBoundingClientRect();
+const copyPath = `<path d="M4 0V2H5V1H14V12H13V13H15V0H4ZM1 3V16H12V3H1ZM11 15H2V4H11V15Z" fill="currentColor"/>`;
+const copyDonePath = `<path fill-rule="evenodd" clip-rule="evenodd" d="M13.213 4L5.597 11.459L2.787 8.706L2 9.477L5.597 13L14 4.77L13.213 4Z" fill="currentColor"/>`;
+const showMoreButton = document.getElementById("show-more-btn");
+const info = document.getElementById("more-infos");
 
 let planning = [];
 
@@ -78,11 +75,7 @@ button.addEventListener("click", async () => {
       i++;
       const li = document.createElement("li");
       const day = date.getDay();
-      li.innerHTML = `<span class="weekday">${
-        dayNames[day - 1]
-      }.</span><span class="date">${date.toLocaleDateString(
-        "fr-CH"
-      )}</span><span class="${isWorking ? "work" : "off"}">${time}</span>`;
+      li.innerHTML = `<span class="weekday">${dayNames[day - 1]}.</span><span class="date">${date.toLocaleDateString()}</span><span class="${isWorking ? "work" : "off"}">${time}</span>`;
       ul.appendChild(li);
       if (isWorking) {
         planning.push({ date, time });
@@ -117,8 +110,10 @@ button.addEventListener("click", async () => {
   if (container.innerHTML === "") {
     container.innerHTML = "<p>Aucune donnée trouvée pour cette personne.</p>";
     copyButton.disabled = true;
+    // exportButton.disabled = true;
   } else {
     copyButton.disabled = false;
+    // exportButton.disabled = false;
   }
 });
 
@@ -129,10 +124,6 @@ copyButton.addEventListener("click", () =>
 async function writeClipboardText(text) {
   try {
     await navigator.clipboard.writeText(text);
-    copyButton.textContent = "Copié !";
-    setTimeout(() => {
-      copyButton.textContent = "Copier le planning";
-    }, 2000);
   } catch (error) {
     console.error(error.message);
   }
@@ -142,23 +133,22 @@ function generateICS(planning) {
   const header = [
     "BEGIN:VCALENDAR",
     "VERSION:2.0",
-    "PRODID:-//MonApp//Planning//FR",
+    "PRODID:-//Planning-Viewer//FR",
+    "CALSCALE:GREGORIAN",
   ];
 
   const events = planning.map(({ date, time }, i) => {
-    const start = new Date(date);
-    const end = new Date(date);
-    const [h, m] = time.split(":");
-    start.setUTCHours(+h, +m);
-    end.setUTCHours(+h + 8, +m); // par exemple : 8h de travail
+    const [start, end] = time.split("-");
+    const [startHour, startMinute] = start.split(":");
+    const [endHour, endMinute] = end.split(":");
 
+    console.log(date.getFullYear(), date.getMonth(), date.getDate());
     const format = (d) =>
       d.toISOString().replace(/[-:]/g, "").split(".")[0] + "Z";
 
     return [
       "BEGIN:VEVENT",
-      `UID:event${i}@monapp.com`,
-      `DTSTAMP:${format(new Date())}`,
+      `UID:event${i}@planning-viewer`,
       `DTSTART:${format(start)}`,
       `DTEND:${format(end)}`,
       `SUMMARY:Travail`,
@@ -178,24 +168,21 @@ function generateICS(planning) {
   link.click();
 }
 
-infoButton.addEventListener("mouseover", () => {
-  infoCard.style.display = "flex";
-});
-
-infoButton.addEventListener("mouseout", () => {
-  infoCard.style.display = "none";
-});
-
-infoButton.addEventListener("click", () => {
-  infoCard.style.display = "flex";
-  if (window.innerWidth <= 768) {
-    document.body.style.overflow = "hidden";
+showMoreButton.addEventListener("click", () => {
+  if (info.classList.contains("hidden")) {
+    info.classList.remove("hidden");
+    showMoreButton.innerHTML = `<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M8.5 1L3.5 5.95L4.213 6.657L7.995 2.914V15H9.005V2.914L12.785 6.657L13.499 5.95L8.5 1Z" fill="currentColor"/></svg>Afficher moins`;
+  } else {
+    info.classList.add("hidden");
+    showMoreButton.innerHTML = `<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M7.995 1V13.086L4.213 9.343L3.5 10.05L7.784 14.293L8.5 15L13.499 10.05L12.785 9.343L9.005 13.086V1H7.995Z" fill="currentColor"/></svg>Afficher plus`;
   }
 });
 
-closeButton.addEventListener("click", () => {
-  infoCard.style.display = "none";
-  if (window.innerWidth <= 768) {
-    document.body.style.overflow = "visible";
+exportButton.addEventListener("click", () => {
+  if (planning.length > 0) {
+    generateICS(planning);
+  }
+  else {
+    alert("Aucun planning à exporter.");
   }
 });
