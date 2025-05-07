@@ -160,7 +160,7 @@ function generateICS(planning) {
       `DTSTART;TZID=Europe/Zurich:${format(date, startHour, startMinute)}`,
       `DTEND;TZID=Europe/Zurich:${format(date, endHour, endMinute)}`,
       `SUMMARY:Travail`,
-      `DESCRIPTION:Jour de travail`,
+      `DESCRIPTION:Digitec Galaxus AG, Rue du Grand-Pré 2B, 1007 Lausanne`,
       "END:VEVENT",
     ].join("\n");
   });

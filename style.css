@@ -152,7 +152,7 @@ label {
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  min-width: 200px;
+  min-width: 120px;
 }
 
 #copy-btn:hover,
@@ -295,7 +295,7 @@ input[type="file"]::file-selector-button {
 
 @media (max-width: 768px) {
   body {
-    padding: 5rem 2rem 2rem 2rem;
+    padding: 5rem 1rem 1rem 1rem;
   }
 
   header {
