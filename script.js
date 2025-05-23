@@ -13,12 +13,17 @@ const copyDonePath = `<path fill-rule="evenodd" clip-rule="evenodd" d="M13.213 4
 const showMoreButton = document.getElementById("show-more-btn");
 const info = document.getElementById("more-infos");
 
+const shopData = [{ "name": "Genève", "shopCode": "GEF", "shopAdress": "Rue de Lausanne 72, 1202 Genève" }, { "name": "Lausanne", "shopCode": "LAF", "shopAdress": "Rue du Grand-Pré 2B, 1007 Lausanne" }]
+
 let planning = [];
+let shop = "";
 
 async function showPlanning() {
   const formData = new FormData(form);
 
   planning = [];
+  shop = "";
+
   const file = upload.files[0];
   const person = formData.get("person").trim();
 
@@ -64,7 +69,15 @@ async function showPlanning() {
 
     const week = dates.map((date, i) => {
       const entry = rawSchedule[i]?.str || "";
-      const isWorking = entry.includes("LAF");
+      if (!shop) {
+        shopData.forEach((el) => {
+          if (entry.includes(el.shopCode)) {
+            shop = el;
+            return;
+          }
+        });
+      }
+      const isWorking = entry.includes(shop.shopCode);
       const time = isWorking ? entry.split(" ")[1] : "-";
       return { date, isWorking, time };
     });
@@ -160,7 +173,7 @@ function generateICS(planning) {
       `DTSTART;TZID=Europe/Zurich:${format(date, startHour, startMinute)}`,
       `DTEND;TZID=Europe/Zurich:${format(date, endHour, endMinute)}`,
       `SUMMARY:Travail`,
-      `DESCRIPTION:Digitec Galaxus AG, Rue du Grand-Pré 2B, 1007 Lausanne`,
+      `DESCRIPTION:Digitec Galaxus AG, ${shop.shopAdress}`,
       "END:VEVENT",
     ].join("\n");
   });
