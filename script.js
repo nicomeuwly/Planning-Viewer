@@ -12,6 +12,7 @@ const copyPath = `<path d="M4 0V2H5V1H14V12H13V13H15V0H4ZM1 3V16H12V3H1ZM11 15H2
 const copyDonePath = `<path fill-rule="evenodd" clip-rule="evenodd" d="M13.213 4L5.597 11.459L2.787 8.706L2 9.477L5.597 13L14 4.77L13.213 4Z" fill="currentColor"/>`;
 const showMoreButton = document.getElementById("show-more-btn");
 const info = document.getElementById("more-infos");
+const statsContainer = document.getElementById("planning-stats");
 
 const shopData = [{ "name": "Genève", "shopCode": "GEF", "shopAdress": "Rue de Lausanne 72, 1202 Genève" }, { "name": "Lausanne", "shopCode": "LAF", "shopAdress": "Rue du Grand-Pré 2B, 1007 Lausanne" }]
 
@@ -129,9 +130,14 @@ async function showPlanning() {
     container.innerHTML = "<p>Aucune donnée trouvée pour cette personne.</p>";
     copyButton.disabled = true;
     exportButton.disabled = true;
+    statsContainer.classList.add("hidden");
   } else {
     copyButton.disabled = false;
     exportButton.disabled = false;
+    statsContainer.classList.remove("hidden");
+    document.getElementById("month").innerHTML = new Date(planning[0].date).toLocaleString("fr-FR", { month: "long", year: "numeric"})
+    document.getElementById("days").innerHTML = planning.length;
+    document.getElementById("rate").innerHTML = Math.round(planning.length / pdf.numPages * 20) + "%";
   }
 };
 
