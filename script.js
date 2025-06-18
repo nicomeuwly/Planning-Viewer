@@ -11,13 +11,22 @@ const container = document.getElementById("planning");
 const copyPath = `<path d="M4 0V2H5V1H14V12H13V13H15V0H4ZM1 3V16H12V3H1ZM11 15H2V4H11V15Z" fill="currentColor"/>`;
 const copyDonePath = `<path fill-rule="evenodd" clip-rule="evenodd" d="M13.213 4L5.597 11.459L2.787 8.706L2 9.477L5.597 13L14 4.77L13.213 4Z" fill="currentColor"/>`;
 const showMoreButton = document.getElementById("show-more-btn");
+const showOptionsButton = document.getElementById("show-options-btn");
 const info = document.getElementById("more-infos");
 const statsContainer = document.getElementById("planning-stats");
+const optionsContainer = document.getElementById("options");
 
 const shopData = [{ "name": "Genève", "shopCode": "GEF", "shopAdress": "Rue de Lausanne 72, 1202 Genève" }, { "name": "Lausanne", "shopCode": "LAF", "shopAdress": "Rue du Grand-Pré 2B, 1007 Lausanne" }]
 
 let planning = [];
 let shop = "";
+
+document.getElementById("pdf-upload").addEventListener("change", function () {
+  const fileNameDisplay = document.querySelector(".file-button");
+  if (this.files.length > 0) {
+    this.files[0].name.length > 15 ? fileNameDisplay.querySelector("span").innerHTML = this.files[0].name.slice(0, 15) + "..." : fileNameDisplay.querySelector("span").innerHTML = this.files[0].name;
+  }
+});
 
 async function showPlanning() {
   const formData = new FormData(form);
@@ -130,16 +139,27 @@ async function showPlanning() {
     container.innerHTML = "<p>Aucune donnée trouvée pour cette personne.</p>";
     copyButton.disabled = true;
     exportButton.disabled = true;
-    statsContainer.classList.add("hidden");
+    statsContainer.style.display = "none";
+    showOptionsButton.style.display = "none";
+    optionsContainer.style.display = "flex";
   } else {
     copyButton.disabled = false;
     exportButton.disabled = false;
-    statsContainer.classList.remove("hidden");
-    document.getElementById("month").innerHTML = new Date(planning[0].date).toLocaleString("fr-FR", { month: "long", year: "numeric"})
-    document.getElementById("days").innerHTML = planning.length;
-    document.getElementById("rate").innerHTML = Math.round(planning.length / pdf.numPages * 20) + "%";
+    statsContainer.style.display = "flex";
+    document.getElementById("month").innerHTML = getMonthYear(planning[parseInt(planning.length / 2)].date);
+    document.getElementById("stats").innerHTML = `Total de jours : ${planning.length} | Taux : ${Math.round(planning.length / pdf.numPages * 20)}%`;
+    showOptionsButton.style.display = "flex";
+    optionsContainer.style.display = "none";
   }
 };
+
+function getMonthYear(date) {
+  const options = { year: "numeric", month: "long" };
+  const formatter = new Intl.DateTimeFormat("fr-FR", options);
+  const formattedDate = formatter.format(date);
+
+  return formattedDate.charAt(0).toUpperCase() + formattedDate.slice(1);
+}
 
 form.addEventListener("submit", (e) => {
   e.preventDefault();
@@ -198,10 +218,12 @@ function generateICS(planning) {
 showMoreButton.addEventListener("click", () => {
   if (info.classList.contains("hidden")) {
     info.classList.remove("hidden");
-    showMoreButton.innerHTML = `<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M8.5 1L3.5 5.95L4.213 6.657L7.995 2.914V15H9.005V2.914L12.785 6.657L13.499 5.95L8.5 1Z" fill="currentColor"/></svg>Afficher moins`;
+    showMoreButton.querySelector("span").innerHTML = "Afficher moins";
+    showMoreButton.querySelector("svg").style.transform = "rotate(-180deg)";
   } else {
     info.classList.add("hidden");
-    showMoreButton.innerHTML = `<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M7.995 1V13.086L4.213 9.343L3.5 10.05L7.784 14.293L8.5 15L13.499 10.05L12.785 9.343L9.005 13.086V1H7.995Z" fill="currentColor"/></svg>Afficher plus`;
+    showMoreButton.querySelector("span").innerHTML = "Afficher plus"
+    showMoreButton.querySelector("svg").style.transform = "rotate(0deg)";
   }
 });
 
@@ -213,3 +235,14 @@ exportButton.addEventListener("click", () => {
     alert("Aucun planning à exporter.");
   }
 });
+
+showOptionsButton.addEventListener("click", () => {
+  if (optionsContainer.style.display == "block") {
+    optionsContainer.style.display = "none";
+    showOptionsButton.querySelector("svg").style.transform = "rotate(0deg)";
+  }
+  else {
+    optionsContainer.style.display = "block";
+    showOptionsButton.querySelector("svg").style.transform = "rotate(90deg)";
+  }
+})

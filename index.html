@@ -11,63 +11,81 @@
 </head>
 
 <body>
-  <header>📅 Planning Viewer<span>v1.1.2</span></header>
+  <header>📅 Planning Viewer<span>v1.2.0</span></header>
   <h1>Charger et visualiser un planning PDF</h1>
   <div id="infos-container">
     <p>Cet outil permet de visualiser les jours de travail d'une personne à partir du planning du mois. Il suffit de
       fournir le planning au format PDF et d'indiquer le nom de la personne concernée.</p>
     <p id="more-infos" class="hidden">L'IA permet d'automatiser l'ajout d'événements à votre calendrier. Par exemple,
       avec Google Agenda, Gemini peut les enregistrer pour vous. Copiez votre planning, et Gemini l'intégrera à votre
-      calendrier. Si vous ne pouvez pas ou ne souhaitez pas utiliser d'IA, vous pouvez simplement exporter le planning. Cette action générera un fichier importable dans votre calendrier habituel.</p>
-    <button id="show-more-btn">Afficher plus
+      calendrier. Si vous ne pouvez pas ou ne souhaitez pas utiliser d'IA, vous pouvez simplement exporter le planning.
+      Cette action générera un fichier importable dans votre calendrier habituel.</p>
+    <button id="show-more-btn">
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path fill-rule="evenodd" clip-rule="evenodd"
           d="M7.995 1V13.086L4.213 9.343L3.5 10.05L7.784 14.293L8.5 15L13.499 10.05L12.785 9.343L9.005 13.086V1H7.995Z"
           fill="currentColor" />
       </svg>
+      <span>Afficher plus</span>
     </button>
   </div>
   <hr>
   <div id="planning-stats" class="hidden">
-    <h2 id="month">Juin 2024</h2>
-    <span id="days">0</span>
-    <span id="rate">0%</span>
+    <h2 id="month"></h2>
+    <span id="stats"></span>
   </div>
-  <input type="file" id="pdf-upload" accept="application/pdf" />
-  <div id="person">
-    <form id="person-container">
-      <div id="person-name-container">
-        <label>Nom et prénom</label>
-        <input type="text" id="person-name" name="person" placeholder="Ex: Skywalker Luke" />
+  <button id="show-options-btn">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path fill-rule="evenodd" clip-rule="evenodd"
+        d="M5.707 1.99969L5 2.70569L9.95 7.65669L5 12.6067L5.707 13.3137L11.364 7.65669L5.707 1.99969Z"
+        fill="currentColor" />
+    </svg>
+    Options
+  </button>
+  <div id="options">
+    <div id="person">
+      <form id="person-container">
+        <div id="person-name-container">
+          <label>Nom et prénom</label>
+          <input type="text" id="person-name" name="person" placeholder="Ex: Skywalker Luke" />
+        </div>
+        <div class="file-upload-wrapper">
+          <input type="file" id="pdf-upload" class="hidden">
+          <label for="pdf-upload" class="file-button"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"
+              xmlns="http://www.w3.org/2000/svg">
+              <path fill-rule="evenodd" clip-rule="evenodd"
+                d="M7.512 0L2.512 4.949L3.227 5.657L7.007 1.914V13.001H8.017V1.914L11.799 5.657L12.512 4.949L7.512 0ZM13.007 12.001V15H2V12.001H1V16H14.007V12.001H13.007Z"
+                fill="currentColor" />
+            </svg>
+            <span>Choisir un fichier</span></label>
+        </div>
+        <button type="submit" id="process-btn">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" clip-rule="evenodd"
+              d="M0 0V16H16V0H0ZM1 3.001H15V1H1V3.001ZM1 15.001H15V4.001H1V15.001ZM8 6V13.001H12V6H8ZM9 12H11V7H9V12ZM4 6V7H5V13.001H6V6H4Z"
+              fill="currentColor" />
+          </svg>
+          Afficher le planning</button>
+      </form>
+      <div id="actions-btn-container">
+        <button type="button" id="copy-btn" disabled="true">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M4 0V2H5V1H14V12H13V13H15V0H4ZM1 3V16H12V3H1ZM11 15H2V4H11V15Z" fill="currentColor" />
+          </svg>
+          Copier
+        </button>
+        <button type="button" id="export-btn" disabled="true">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" clip-rule="evenodd"
+              d="M7.007 0V11.086L3.227 7.343L2.512 8.05L7.512 13.001L12.512 8.05L11.799 7.343L8.017 11.086V0H7.007ZM13.007 12.001V15H2V12.001H1V16H14.007V12.001H13.007Z"
+              fill="currentColor" />
+          </svg>
+          Exporter
+        </button>
       </div>
-      <button type="submit" id="process-btn">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path fill-rule="evenodd" clip-rule="evenodd"
-            d="M0 0V16H16V0H0ZM1 3.001H15V1H1V3.001ZM1 15.001H15V4.001H1V15.001ZM8 6V13.001H12V6H8ZM9 12H11V7H9V12ZM4 6V7H5V13.001H6V6H4Z"
-            fill="currentColor" />
-        </svg>
-        Afficher le planning</button>
-    </form>
-    <div id="actions-btn-container">
-      <button type="button" id="copy-btn" disabled="true">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M4 0V2H5V1H14V12H13V13H15V0H4ZM1 3V16H12V3H1ZM11 15H2V4H11V15Z" fill="currentColor" />
-        </svg>
-        Copier
-      </button>
-      <button type="button" id="export-btn" disabled="true">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path fill-rule="evenodd" clip-rule="evenodd"
-            d="M7.007 0V11.086L3.227 7.343L2.512 8.05L7.512 13.001L12.512 8.05L11.799 7.343L8.017 11.086V0H7.007ZM13.007 12.001V15H2V12.001H1V16H14.007V12.001H13.007Z"
-            fill="currentColor" />
-        </svg>
-        Exporter
-      </button>
     </div>
   </div>
-
   <div id="planning"></div>
-
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
   <script src="script.js"></script>
 </body>
