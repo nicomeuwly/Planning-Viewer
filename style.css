@@ -101,6 +101,7 @@ p {
   font-size: 1rem;
   align-items: center;
   gap: 0.2rem;
+  color: black;
 }
 
 #show-options-btn:hover {

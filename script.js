@@ -16,7 +16,16 @@ const info = document.getElementById("more-infos");
 const statsContainer = document.getElementById("planning-stats");
 const optionsContainer = document.getElementById("options");
 
-const shopData = [{ "name": "Genève", "shopCode": "GEF", "shopAdress": "Rue de Lausanne 72, 1202 Genève" }, { "name": "Lausanne", "shopCode": "LAF", "shopAdress": "Rue du Grand-Pré 2B, 1007 Lausanne" }]
+const shopData = [
+  {
+    name: "Genève",
+    shopCode: "GEF",
+  },
+  {
+    name: "Lausanne",
+    shopCode: "LAF",
+  },
+];
 
 let planning = [];
 let shop = "";
@@ -24,7 +33,10 @@ let shop = "";
 document.getElementById("pdf-upload").addEventListener("change", function () {
   const fileNameDisplay = document.querySelector(".file-button");
   if (this.files.length > 0) {
-    this.files[0].name.length > 15 ? fileNameDisplay.querySelector("span").innerHTML = this.files[0].name.slice(0, 15) + "..." : fileNameDisplay.querySelector("span").innerHTML = this.files[0].name;
+    this.files[0].name.length > 15
+      ? (fileNameDisplay.querySelector("span").innerHTML =
+          this.files[0].name.slice(0, 15) + "...")
+      : (fileNameDisplay.querySelector("span").innerHTML = this.files[0].name);
   }
 });
 
@@ -38,7 +50,8 @@ async function showPlanning() {
   const person = formData.get("person").trim();
 
   if (!file || !person) {
-    container.innerHTML = "<p>Sélectionnez un fichier PDF et entrez un nom.</p>";
+    container.innerHTML =
+      "<p>Sélectionnez un fichier PDF et entrez un nom.</p>";
     return;
   }
 
@@ -103,7 +116,11 @@ async function showPlanning() {
       i++;
       const li = document.createElement("li");
       const day = date.getDay();
-      li.innerHTML = `<span class="weekday">${dayNames[day - 1]}.</span><span class="date">${date.toLocaleDateString()}</span><span class="${isWorking ? "work" : "off"}">${time}</span>`;
+      li.innerHTML = `<span class="weekday">${
+        dayNames[day - 1]
+      }.</span><span class="date">${date.toLocaleDateString()}</span><span class="${
+        isWorking ? "work" : "off"
+      }">${time}</span>`;
       ul.appendChild(li);
       if (isWorking) {
         planning.push({ date, time });
@@ -146,12 +163,16 @@ async function showPlanning() {
     copyButton.disabled = false;
     exportButton.disabled = false;
     statsContainer.style.display = "flex";
-    document.getElementById("month").innerHTML = getMonthYear(planning[parseInt(planning.length / 2)].date);
-    document.getElementById("stats").innerHTML = `Total de jours : ${planning.length} | Taux : ${Math.round(planning.length / pdf.numPages * 20)}%`;
+    document.getElementById("month").innerHTML = getMonthYear(
+      planning[parseInt(planning.length / 2)].date
+    );
+    document.getElementById("stats").innerHTML = `Total de jours : ${
+      planning.length
+    } | Taux : ${getRate(planning, pdf.numPages)}%`;
     showOptionsButton.style.display = "flex";
     optionsContainer.style.display = "none";
   }
-};
+}
 
 function getMonthYear(date) {
   const options = { year: "numeric", month: "long" };
@@ -159,6 +180,32 @@ function getMonthYear(date) {
   const formattedDate = formatter.format(date);
 
   return formattedDate.charAt(0).toUpperCase() + formattedDate.slice(1);
+}
+
+function getHours(time) {
+  const [hours, minutes] = time.split(":").map(Number);
+  const totalHours = hours + minutes / 60;
+  return totalHours;
+}
+
+function getRate(planning, totalWeeks) {
+  if (totalWeeks === 0) return 0;
+  let totalHours = 0;
+  planning.forEach((el) => {
+    let total = 0;
+    const startHour = getHours(el.time.split("-")[0]);
+    const endHour = getHours(el.time.split("-")[1]);
+    if (endHour > startHour) {
+      total = endHour - startHour;
+    }
+    if (el.date.getDay() === 6) {
+      total -= 0.5;
+    } else {
+      total -= 1;
+    }
+    totalHours += total;
+  });
+  return Math.round((totalHours / 182) * 100);
 }
 
 form.addEventListener("submit", (e) => {
@@ -173,6 +220,10 @@ copyButton.addEventListener("click", () =>
 async function writeClipboardText(text) {
   try {
     await navigator.clipboard.writeText(text);
+    copyButton.querySelector("svg").innerHTML = copyDonePath;
+    setTimeout(() => {
+      copyButton.querySelector("svg").innerHTML = copyPath;
+    }, 2000);
   } catch (error) {
     console.error(error.message);
   }
@@ -182,8 +233,8 @@ function generateICS(planning) {
   const header = [
     "BEGIN:VCALENDAR",
     "VERSION:2.0",
-    "PRODID:-//Planning-Viewer//FR",
     "CALSCALE:GREGORIAN",
+    "PRODID:-//Planning Digitec//FR",
   ];
 
   const events = planning.map(({ date, time }, i) => {
@@ -191,15 +242,22 @@ function generateICS(planning) {
     const [startHour, startMinute] = start.split(":");
     const [endHour, endMinute] = end.split(":");
 
-    const format = (d, h, m) => d.getFullYear() + ("0" + (d.getMonth() + 1)).slice(-2) + ("0" + d.getDate()).slice(-2) + "T" + h + m + "00Z";
+    const format = (d, h, m) =>
+      d.getFullYear() +
+      ("0" + (d.getMonth() + 1)).slice(-2) +
+      ("0" + d.getDate()).slice(-2) +
+      "T" +
+      h +
+      m +
+      "00Z";
 
     return [
       "BEGIN:VEVENT",
-      `UID:event${i}@planning-viewer`,
       `DTSTART;TZID=Europe/Zurich:${format(date, startHour, startMinute)}`,
       `DTEND;TZID=Europe/Zurich:${format(date, endHour, endMinute)}`,
       `SUMMARY:Travail`,
-      `DESCRIPTION:Digitec Galaxus AG, ${shop.shopAdress}`,
+      `Location:${shop.name}`,
+      `UID:${format(date, startHour, startMinute)}@planning-viewer`,
       "END:VEVENT",
     ].join("\n");
   });
@@ -222,7 +280,7 @@ showMoreButton.addEventListener("click", () => {
     showMoreButton.querySelector("svg").style.transform = "rotate(-180deg)";
   } else {
     info.classList.add("hidden");
-    showMoreButton.querySelector("span").innerHTML = "Afficher plus"
+    showMoreButton.querySelector("span").innerHTML = "Afficher plus";
     showMoreButton.querySelector("svg").style.transform = "rotate(0deg)";
   }
 });
@@ -230,8 +288,7 @@ showMoreButton.addEventListener("click", () => {
 exportButton.addEventListener("click", () => {
   if (planning.length > 0) {
     generateICS(planning);
-  }
-  else {
+  } else {
     alert("Aucun planning à exporter.");
   }
 });
@@ -240,9 +297,8 @@ showOptionsButton.addEventListener("click", () => {
   if (optionsContainer.style.display == "block") {
     optionsContainer.style.display = "none";
     showOptionsButton.querySelector("svg").style.transform = "rotate(0deg)";
-  }
-  else {
+  } else {
     optionsContainer.style.display = "block";
     showOptionsButton.querySelector("svg").style.transform = "rotate(90deg)";
   }
-})
+});
