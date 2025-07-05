@@ -166,9 +166,10 @@ async function showPlanning() {
     document.getElementById("month").innerHTML = getMonthYear(
       planning[parseInt(planning.length / 2)].date
     );
-    document.getElementById("stats").innerHTML = `Total de jours : ${
+    const rate = getRate(planning, pdf.numPages);
+    document.getElementById("stats").innerHTML = `${
       planning.length
-    } | Taux : ${getRate(planning, pdf.numPages)}%`;
+    } jours | ${rate.totalHours} heures | ${rate.rate}%`;
     showOptionsButton.style.display = "flex";
     optionsContainer.style.display = "none";
   }
@@ -193,19 +194,24 @@ function getRate(planning, totalWeeks) {
   let totalHours = 0;
   planning.forEach((el) => {
     let total = 0;
+    const weekDay = el.date.getDay();
     const startHour = getHours(el.time.split("-")[0]);
     const endHour = getHours(el.time.split("-")[1]);
     if (endHour > startHour) {
       total = endHour - startHour;
     }
-    if (el.date.getDay() === 6) {
+    if (weekDay == 6) {
       total -= 0.5;
-    } else {
+    } else if (total < 9.5 && weekDay !== 6) {
+      total -= 0.75;
+    } else if (total >= 9.5 && total < 10.5 && weekDay !== 6) {
       total -= 1;
+    } else if (total >= 10.5 && total <= 11 && weekDay !== 6) {
+      total -= 1.25;
     }
     totalHours += total;
   });
-  return Math.round((totalHours / 182) * 100);
+  return { rate : (planning.length / totalWeeks / 5 * 100), totalHours: totalHours.toFixed(2)};
 }
 
 form.addEventListener("submit", (e) => {
